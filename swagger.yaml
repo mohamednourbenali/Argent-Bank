@@ -1,0 +1,130 @@
+swagger: "2.0"
+
+info:
+  title: Argent Bank Transaction API
+  description: API pour gérer les transactions des utilisateurs
+  version: 2.0.0
+
+host: localhost:3001
+basePath: /api/v2
+schemes:
+  - http
+
+paths:
+  /user/transactions:
+    get:
+      tags:
+        - Transaction module
+      summary: Récupérer les détails des transactions du mois en cours
+      description: Retourne un tableau d'objets contenant les détails de toutes les transactions associées à un compte spécifique.
+      parameters:
+        - in: header
+          name: userId
+          description: L'ID du compte pour lequel récupérer les transactions.
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: Liste des transactions récupérée avec succès
+          schema:
+            type: array
+            items: 
+              $ref: '#/definitions/Transaction'
+        "400":
+          description: Invalid Fields
+        "401":
+          description: Unauthorized
+        "404":
+          description: Transactions not found
+        "500":
+          description: Internal Server Error
+
+  /user/transaction/{transactionId}/note:
+    put:
+      tags:
+        - Transaction module
+      summary: Ajouter ou modifier une note dans une transaction
+      description: Ajoute une nouvelle note à une transaction existante ou modifie la note d'une transaction spécifique à l'aide de son `transactionId`.
+      parameters:
+        - in: path
+          name: transactionId
+          description: L'ID de la transaction à laquelle ajouter ou modifier une note.
+          required: true
+          type: string
+        - in: body
+          name: note
+          description: La note à ajouter ou à modifier dans la transaction.
+          required: true
+          schema:
+            type: object
+            properties:
+              note:
+                type: string
+                description: Note à ajouter ou à modifier dans la transaction
+                example: "Note pour la transaction"
+      produces:
+        - application/json
+      responses:
+        "200":
+          description: Note ajoutée ou modifiée avec succès
+          schema:
+            $ref: '#/definitions/Transaction'
+        "400":
+          description: Invalid Fields
+        "401":
+          description: Unauthorized
+        "404":
+          description: Transaction not found
+        "500":
+          description: Internal Server Error
+
+    delete:
+      tags:
+      - Transaction module
+      summary: Supprimer la note d'une transaction
+      description: Supprime uniquement la **note** d'une transaction spécifique à l'aide de son `transactionId`, sans supprimer la transaction elle-même.
+      parameters:
+        - in: path
+          name: transactionId
+          description: L'ID de la transaction dont la note doit être supprimée.
+          required: true
+          type: string
+      produces:
+        - application/json
+      responses:
+        "204":
+          description: Note supprimée avec succès
+        "400":
+          description: Invalid Fields
+        "401":
+          description: Unauthorized
+        "404":
+          description: Note not found
+        "500":
+          description: Internal Server Error
+
+definitions:
+Transaction:
+  type: object
+  description: transaction
+  properties:
+    transactionId:
+      type: string
+      description: Id of the transaction
+    date:
+      type: string
+      description: Date of the transaction
+    amount:
+      type: number
+      description: Amount of the transaction
+    description:
+      type: string
+      description: Description of the transaction
+    category:
+      type: string
+      description: Category of the transaction
+    notes:
+      type: string
+      description: Notes of the transaction
