@@ -7,8 +7,6 @@ export const signin = async (credentials) => {
   try {
     const response = await axios.post(`${API_URL}/login`, credentials);
     const token = response.data.body.token;
-    localStorage.setItem('authToken', token);
-
     return {token};
   } catch (error) {
     console.error('Erreur lors de la connexion:', error.response?.data?.message || error.message);

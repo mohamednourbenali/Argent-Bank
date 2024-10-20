@@ -33,18 +33,18 @@ function Header () {
     }
     useEffect(() => {
         const fetchUser = async () => {
-          if (token) {
-              dispatch(setLoading(true));
-              try {
-                  const response = await getUserProfile(token);
-                  dispatch (setUser(response.body));
-                  dispatch(setToken(token));
-              } catch(error) {
-                  dispatch(setError(error.message));
-              } finally {
-                  (setLoading(false));
-              }
-          }
+            if (token) {
+                dispatch(setLoading(true));
+                try {
+                    const response = await getUserProfile(token);
+                    dispatch (setUser(response.body));
+                    dispatch(setToken(token));
+                } catch(error) {
+                    dispatch(setError(error.message));
+                } finally {
+                    (setLoading(false));
+                }
+            }
         }
         fetchUser();
       }, [token, dispatch])

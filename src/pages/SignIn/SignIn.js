@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import Formulaire from "../../components/Formulaire/Formulaire"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUserCircle } from '@fortawesome/free-solid-svg-icons';

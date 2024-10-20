@@ -16,22 +16,24 @@ function Profil () {
     
     useEffect(() => {
         const fetchUser = async () => {
-            if (token) {
-                dispatch(setLoading(true));
-                try {
-                    const response = await getUserProfile(token);
-                    dispatch (setUser(response.body));
-                    dispatch (setToken(token));
-                } catch(error) {
-                    dispatch(setError(error.message));
-                    navigate("/");
-                } finally {
-                    (setLoading(false));
-                }
+            if (!token) {
+                navigate("/signin");
+                return;
             }
-        }
+            dispatch(setLoading(true));
+            try {
+                const response = await getUserProfile(token);
+                dispatch(setUser(response.body));
+                dispatch(setToken(token));
+            } catch (error) {
+                dispatch(setError(error.message));
+                navigate("/"); // Redirection vers la page d'accueil en cas d'erreur
+            } finally {
+                dispatch(setLoading(false));
+            }
+        };
         fetchUser();
-    }, [token, dispatch])
+    }, [token, dispatch, navigate]);
     return (
         <main className="main bg-dark">
             <div className="header">

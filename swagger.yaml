@@ -11,14 +11,14 @@ schemes:
   - http
 
 paths:
-  /user/transactions:
+  /{userId}/transactions:
     get:
       tags:
         - Transaction module
       summary: Récupérer les détails des transactions du mois en cours
       description: Retourne un tableau d'objets contenant les détails de toutes les transactions associées à un compte spécifique.
       parameters:
-        - in: header
+        - in: path
           name: userId
           description: L'ID du compte pour lequel récupérer les transactions.
           required: true
@@ -40,7 +40,23 @@ paths:
           description: Transactions not found
         "500":
           description: Internal Server Error
-
+  /user/transactions/{transactionId}:
+    get:
+      tags:
+        - Transaction module
+      summary: Récupérer les détails d'une transaction spécifique
+      parameters:
+        - in: path
+          name: transactionId
+          required: true
+          type: string
+      responses:
+        '200':
+          description: une seule transaction
+          schema:
+            $ref: '#/definitions/Transaction'
+        '404':
+          description: Transaction not found
   /user/transaction/{transactionId}/note:
     put:
       tags:
@@ -106,25 +122,25 @@ paths:
           description: Internal Server Error
 
 definitions:
-Transaction:
-  type: object
-  description: transaction
-  properties:
-    transactionId:
-      type: string
-      description: Id of the transaction
-    date:
-      type: string
-      description: Date of the transaction
-    amount:
-      type: number
-      description: Amount of the transaction
-    description:
-      type: string
-      description: Description of the transaction
-    category:
-      type: string
-      description: Category of the transaction
-    notes:
-      type: string
-      description: Notes of the transaction
+  Transaction:
+    type: object
+    description: transaction
+    properties:
+      id:
+        type: string
+        description: Id of the transaction
+      date:
+        type: string
+        description: Date of the transaction
+      amount:
+        type: number
+        description: Amount of the transaction
+      description:
+        type: string
+        description: Description of the transaction
+      category:
+        type: string
+        description: Category of the transaction
+      notes:
+        type: string
+        description: Notes of the transaction

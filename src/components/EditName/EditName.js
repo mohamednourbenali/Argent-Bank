@@ -7,7 +7,6 @@ import "./EditName.css"
 function EditName() {
     const dispatch = useDispatch();
     const token = useSelector((state) => state.token);
-    console.log("token : ", token)
 
     const [show, setShow] = useState(false);
     const [newFirstName, setNewFirstName] = useState("");
